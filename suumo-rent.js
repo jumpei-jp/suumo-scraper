@@ -86,15 +86,15 @@ function scrapeSuumoProperties() {
         var rent = rentMatch ? rentMatch[1].trim() : '';
         
         // 管理費の抽出
-        var adminFeeMatch = trContent.match(/cassetteitem_price--administration">([^<]+)<\/span>/);
+        var adminFeeMatch = trContent.match(/cassetteitem_price cassetteitem_price--administration">([^<]+)<\/span>/);
         var adminFee = adminFeeMatch ? adminFeeMatch[1].trim() : '';
         
         // 敷金の抽出
-        var depositMatch = trContent.match(/cassetteitem_price--deposit">([^<]+)<\/span>/);
+        var depositMatch = trContent.match(/cassetteitem_price cassetteitem_price--deposit">([^<]+)<\/span>/);
         var deposit = depositMatch ? depositMatch[1].trim() : '';
         
         // 礼金の抽出
-        var keyMoneyMatch = trContent.match(/cassetteitem_price--gratuity">([^<]+)<\/span>/);
+        var keyMoneyMatch = trContent.match(/cassetteitem_price cassetteitem_price--gratuity">([^<]+)<\/span>/);
         var keyMoney = keyMoneyMatch ? keyMoneyMatch[1].trim() : '';
         
         // 間取りの抽出
