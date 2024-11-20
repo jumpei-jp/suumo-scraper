@@ -48,17 +48,17 @@ function fetchAndSaveSuumoData() {
         const rent = detail.match(/<span class="cassetteitem_other-emphasis ui-text--bold">(.*?)<\/span>/)?.[1]?.trim();
 
         // 管理費
-        const adminFee = detail.match(/<span class="cassetteitem_price--administration">(.*?)<\/span>/)?.[1]?.trim();
+        const adminFee = detail.match(/<span class="cassetteitem_price cassetteitem_price--administration">(.*?)<\/span>/)?.[1]?.trim();
 
         // 敷金, 礼金
-        const deposit = detail.match(/<span class="cassetteitem_price--deposit">(.*?)<\/span>/)?.[1]?.trim() || "-";
-        const gratuity = detail.match(/<span class="cassetteitem_price--gratuity">(.*?)<\/span>/)?.[1]?.trim() || "-";
+        const deposit = detail.match(/<span class="cassetteitem_price cassetteitem_price--deposit">(.*?)<\/span>/)?.[1]?.trim() || "-";
+        const gratuity = detail.match(/<span class="cassetteitem_price cassetteitem_price--gratuity">(.*?)<\/span>/)?.[1]?.trim() || "-";
 
         // 間取り
         const layout = detail.match(/<span class="cassetteitem_madori">(.*?)<\/span>/)?.[1]?.trim();
 
         // 専有面積
-        const area = detail.match(/<span class="cassetteitem_menseki">(.*?)<\/span>/)?.[1]?.trim();
+        const area = detail.match(/<span class="cassetteitem_menseki">(.*?)<sup>.<\/sup><\/span>/)?.[1]?.trim();
 
         // 物件ID
         const propertyId = detail.match(/value="(\d+)"/)?.[1]?.trim();
