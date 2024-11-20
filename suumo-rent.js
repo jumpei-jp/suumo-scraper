@@ -28,7 +28,7 @@ function fetchAndSaveSuumoData() {
       const address = property.match(/<li class="cassetteitem_detail-col1">(.*?)<\/li>/)?.[1]?.trim();
 
       // 最寄り駅
-      const nearestStations = [...property.matchAll(/<div class="cassetteitem_detail-text">(.*?)<\/div>/g)]
+      const nearestStations = [...property.matchAll(/<div class="cassetteitem_detail-text"(?:\s+style="[^"]*")?>(.*?)<\/div>/g)]
         .map(match => match[1]?.trim())
         .filter(station => station); // Filter out empty strings
       const nearestStation = nearestStations.join("\n");
