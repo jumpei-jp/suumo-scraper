@@ -1,1 +1,3 @@
 # suumo-scraper
+
+suumoで検索条件を変更して、parameterを変更すればどんな物件情報でも取得することができる
