@@ -146,6 +146,10 @@ function fetchAndSaveSuumoData() {
         page++;
       }
 
+      // テーブル全体にフィルターを追加
+      const range = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn());
+      range.createFilter();
+
       Logger.log("データの取得が完了しました。");
 
     });
