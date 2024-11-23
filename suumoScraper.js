@@ -38,7 +38,7 @@ function fetchAndSaveSuumoData() {
   const stationCode = 1;
 
   // Add headers
-  const headers = ["物件名", "住所", "最寄り駅", "築年数", "階数", "階", "賃料", "管理費", "敷金", "礼金", "間取り", "専有面積", "物件ID", "詳細URL"];
+  const headers = ["物件名", "住所", "最寄り駅", "築年数", "階数", "賃料+管理費", "賃料", "管理費", "敷金", "礼金", "間取り", "専有面積", "物件ID", "詳細URL"];
 
   try {
     // 各駅ごとにデータを取得する
@@ -56,7 +56,7 @@ function fetchAndSaveSuumoData() {
 
       sheet.appendRow(headers);
       // 賃料、管理費の表示形式を通貨形式に設定し、端数を切り捨て
-      const currencyColumns = sheet.getRange("G:H"); // 賃料の列はG列目
+      const currencyColumns = sheet.getRange("F:H"); // 賃料の列はG列目
       currencyColumns.setNumberFormat('¥#,##0');
 
       let page = 1;
@@ -99,23 +99,26 @@ function fetchAndSaveSuumoData() {
 
           details.forEach(detail => {
 
-            // 階
-            const floor = detail.match(/<td>(\d+階)<\/td>/)?.[1]?.trim();
-
             // 賃料
             // const rent = detail.match(/<span class="cassetteitem_other-emphasis ui-text--bold">(.*?)<\/span>/)?.[1]?.trim();
             const rentMatch = detail.match(/<span class="cassetteitem_other-emphasis ui-text--bold">(.*?)<\/span>/)?.[1]?.trim();
-            let rent = rentMatch ? rentMatch.replace(/[^\d.]/g, '') : null;
+            let rent = rentMatch ? rentMatch.replace(/[^\d.]/g, '') : 0;
             if (rent) {
               rent = parseFloat(rent) * 10000;
             }
 
             // 管理費
             const adminFeeMatch = detail.match(/<span class="cassetteitem_price cassetteitem_price--administration">(.*?)<\/span>/)?.[1]?.trim();
-            let adminFee = adminFeeMatch ? adminFeeMatch.replace(/[^\d.]/g, '') : null;
+            let adminFee = adminFeeMatch ? adminFeeMatch.replace(/[^\d.]/g, '') : '0';
             if (adminFee) {
               adminFee = parseFloat(adminFee);
-            }
+            } else if (adminFee === '') {
+              adminFee = parseFloat(0);
+            };
+
+            //  賃料+管理費
+            totalRent = rent + adminFee;
+
             // 敷金, 礼金
             const deposit = detail.match(/<span class="cassetteitem_price cassetteitem_price--deposit">(.*?)<\/span>/)?.[1]?.trim() || "-";
             const gratuity = detail.match(/<span class="cassetteitem_price cassetteitem_price--gratuity">(.*?)<\/span>/)?.[1]?.trim() || "-";
@@ -134,7 +137,7 @@ function fetchAndSaveSuumoData() {
 
             // Append to sheet
             sheet.appendRow([
-              propertyName, address, nearestStation, age, floors, floor, rent, adminFee, deposit, gratuity, layout, area, propertyId, "https://suumo.jp" + detailUrl
+              propertyName, address, nearestStation, age, floors, totalRent, rent, adminFee, deposit, gratuity, layout, area, propertyId, "https://suumo.jp" + detailUrl
             ]);
           });
         });
