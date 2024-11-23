@@ -1,6 +1,39 @@
 function fetchAndSaveSuumoData() {
   const domain = "https://suumo.jp";
-  const parameter = "/jj/chintai/ichiran/FR301FC001/?ar=030&bs=040&pc=30&smk=&po1=25&po2=99&shkr1=03&shkr2=03&shkr3=03&shkr4=03&rsnflg=1&rn=0125&rn=0095&rn=0005&ek=012508940&ek=009513410&ek=012506360&ek=012505480&ek=009500240&ek=009523090&ek=009516530&ek=000517460&ra=013&cb=12.0&ct=20.0&md=06&md=07&et=15&mb=40&mt=9999999&cn=9999999&tc=0400301&fw2=";
+  const parameter = "/jj/chintai/ichiran/FR301FC001/?" +
+                  "ar=030&" + // エリア
+                  "bs=040&" + // 物件種別
+                  "pc=50&" + // ページネーション
+                  "smk=&" +
+                  "po1=25&" + // 並び替え: 25=おすすめ順, 12= 賃料+管理費が安い順, ....
+                  "po2=99&" +
+                  "shkr1=03&" +
+                  "shkr2=03&" +
+                  "shkr3=03&" +
+                  "shkr4=03&" +
+                  "rsnflg=1&" +
+                  "rn=0125&" + // 山手線
+                  "rn=0095&" + // 京浜東北線
+                  "rn=0005&" + // 京急本線
+                  "ek=012508940&" + // 蒲田
+                  "ek=009513410&" + // 京急蒲田
+                  "ek=012506360&" + // 大森
+                  "ek=012505480&" + // 大井町
+                  "ek=009500240&" + // 青物横丁
+                  "ek=009523090&" + // 立会川
+                  "ek=009516530&" + // 鮫洲
+                  "ek=000517460&" + // 品川
+                  "ra=013&" +
+                  "cb=12.0&" + // 賃料 12万円以上
+                  "ct=20.0&" + // 賃料 20万円
+                  "md=06&" + // 間取り 2DK
+                  "md=07&" + // 間取り 2LDK
+                  "et=15&" + // 駅徒歩 15分以内
+                  "mb=40&" + // 専有面積 40m2以上
+                  "mt=9999999&" + // 専有面積 9999m2以下(上限なし)
+                  "cn=9999999&" + // 築年数 9999年以下(上限なし)
+                  "tc=0400301&" + // こだわり条件: 風呂トイレ別
+                  ":fw2="; // フリーワード
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
   sheet.clear(); // Clear existing content in the sheet
