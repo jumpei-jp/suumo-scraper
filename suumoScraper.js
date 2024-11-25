@@ -5,7 +5,7 @@ function fetchAndSaveSuumoData() {
                   "bs=040&" + // 物件種別
                   "pc=50&" + // ページネーション
                   "smk=&" +
-                  "po1=25&" + // 並び替え: 25=おすすめ順, 12= 賃料+管理費が安い順, ....
+                  "po1=15&" + // 並び替え: 25=おすすめ順, 12=賃料+管理費が安い順, 15=賃料+管理費が高い順, ....
                   "po2=99&" +
                   "shkr1=03&" +
                   "shkr2=03&" +
@@ -25,14 +25,22 @@ function fetchAndSaveSuumoData() {
 
   // ekコードとrnコードをセットにして配列に入れる
   const stationParameters = [
-    ["品川", "rn=0005&ek=000517460&"], // 山手線 品川
-    ["大井町", "rn=0125&ek=012505480&"], // 京浜東北線 大井町
-    ["大森駅", "rn=0125&ek=012506360&"], // 京浜東北線 大森
-    ["蒲田", "rn=0125&ek=012508940&"], // 京浜東北線 蒲田
-    ["青物横丁", "rn=0095&ek=009500240&"], // 京急本線 青物横丁
-    ["鮫洲", "rn=0095&ek=009516530&"], // 京急本線 鮫洲
-    ["立会川", "rn=0095&ek=009523090&"], // 京急本線 立会川
-    ["京急蒲田", "rn=0095&ek=009513410&"], // 京急本線 京急蒲田
+    ["品川", "rn=0005&ek=000517460&"],
+    ["浜松町", "rn=0005&ek=000531160&"],
+    ["田町", "rn=0005&ek=000523500&"],
+    ["高輪ゲートウェイ", "rn=0005&ek=000584570&"],
+    ["大崎", "rn=0005&ek=000505780&"],
+    ["五反田", "rn=0005&ek=000514970&"],
+    ["泉岳寺", "rn=0055&ek=005521340&"],
+    ["三田", "rn=0055&ek=005536860&"],
+    ["大門", "rn=0055&ek=005522090&"],
+    ["大井町", "rn=0125&ek=012505480&"],
+    ["大森駅", "rn=0125&ek=012506360&"],
+    ["蒲田", "rn=0125&ek=012508940&"],
+    ["青物横丁", "rn=0095&ek=009500240&"],
+    ["鮫洲", "rn=0095&ek=009516530&"],
+    ["立会川", "rn=0095&ek=009523090&"],
+    ["京急蒲田", "rn=0095&ek=009513410&"],
   ]
   const stationName = 0;
   const stationCode = 1;
@@ -48,10 +56,16 @@ function fetchAndSaveSuumoData() {
       let spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
       let sheet = spreadsheet.getSheetByName(sheetName);
 
+      Logger.log(station[stationName] + "のデータを取得します。");
+
       if (!sheet) {
         sheet = spreadsheet.insertSheet(sheetName);
       } else {
         sheet.clear();
+        // 既存シートにフィルターがあればエラーが出るので削除
+        if (sheet.getFilter()) {
+          sheet.getFilter().remove();
+        }
       }
 
       sheet.appendRow(headers);
